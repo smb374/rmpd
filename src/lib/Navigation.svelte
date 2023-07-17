@@ -2,7 +2,6 @@
     import PlayerControl from "./PlayerControl.svelte";
     import type { Component } from "./Types";
     import Icon, { type IconifyIcon } from "@iconify/svelte";
-    import autoAnimate from "@formkit/auto-animate";
 
     export let triggers: IconifyIcon[];
     export let contents: Component[];
@@ -28,7 +27,6 @@
     </div>
     <div
         class="flex-1 flex flex-row space-x-4 items-center overflow-scroll"
-        use:autoAnimate
     >
         {#each contents as content, idx}
             {#if activeTabValue == idx}

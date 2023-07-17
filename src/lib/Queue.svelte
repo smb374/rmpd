@@ -47,8 +47,8 @@
             >
                 <div class="flex-none w-16">{item.position + 1}</div>
                 <div class="flex-1">
-                    {(item.song.tags?.["Artist"]?.[0] || "Unknown") +
-                        " - " +
+                    {(item.song.tags?.["Album"]?.[0] || "Unknown") +
+                        ": " +
                         (item.song.tags?.["Title"]?.[0] || "Unknown")}
                 </div>
                 <div class="flex-none">

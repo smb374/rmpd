@@ -9,9 +9,9 @@
         currentTime,
         totalItems,
         totalTime,
-        isPlaying,
         isRepeat,
         singleMode,
+        playState,
     } from "./StatusUpdate";
     import Icon from "@iconify/svelte";
     import numeric1BoxOutline from "@iconify/icons-mdi/numeric-1-box-outline";
@@ -30,7 +30,8 @@
     let currentTimeStr = "0:00";
     let totalTimeStr = "0:00";
 
-    $: isSingle = $singleMode === "Enabled";
+    $: isSingle = $singleMode !== "Disabled";
+    $: isPlaying = $playState === "Playing";
     $: totalTimeStr = format($totalTime);
     $: currentTimeStr = format($currentTime);
     $: currentProgress = calProgress($currentTime, $totalTime);
@@ -42,7 +43,7 @@
         return 0;
     }
     function handlePlay() {
-        pause($isPlaying).catch((err) => console.error(err));
+        pause(isPlaying).catch((err) => console.error(err));
     }
     function handleNext() {
         next().catch((err) => console.error(err));
@@ -51,15 +52,12 @@
         previous().catch((err) => console.error(err));
     }
     function handleRepeat() {
-        console.log("Toggle repeat.");
         repeat(!$isRepeat).catch((err) => console.error(err));
     }
     function handleSingle() {
         if (isSingle) {
-            console.log("Disable single.");
             single("Disabled").catch((err) => console.error(err));
         } else {
-            console.log("Enable single.");
             single("Enabled").catch((err) => console.error(err));
         }
     }
@@ -102,7 +100,7 @@
                     class="btn btn-sm btn-primary join-item"
                     on:click={handlePlay}
                 >
-                    {#if $isPlaying}
+                    {#if isPlaying}
                         <Icon icon={pauseIcon} {height} />
                     {:else}
                         <Icon icon={playIcon} {height} />
