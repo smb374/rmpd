@@ -11,7 +11,7 @@
         totalTime,
         isPlaying,
         isRepeat,
-        isSingle,
+        singleMode,
     } from "./StatusUpdate";
     import Icon from "@iconify/svelte";
     import numeric1BoxOutline from "@iconify/icons-mdi/numeric-1-box-outline";
@@ -30,6 +30,7 @@
     let currentTimeStr = "0:00";
     let totalTimeStr = "0:00";
 
+    $: isSingle = $singleMode === "Enabled";
     $: totalTimeStr = format($totalTime);
     $: currentTimeStr = format($currentTime);
     $: currentProgress = calProgress($currentTime, $totalTime);
@@ -40,23 +41,26 @@
         }
         return 0;
     }
-    async function handlePlay() {
-        await pause($isPlaying);
+    function handlePlay() {
+        pause($isPlaying).catch((err) => console.error(err));
     }
-    async function handleNext() {
-        await next();
+    function handleNext() {
+        next().catch((err) => console.error(err));
     }
-    async function handlePrevious() {
-        await previous();
+    function handlePrevious() {
+        previous().catch((err) => console.error(err));
     }
-    async function handleRepeat() {
-        await repeat(!$isRepeat);
+    function handleRepeat() {
+        console.log("Toggle repeat.");
+        repeat(!$isRepeat).catch((err) => console.error(err));
     }
-    async function handleSingle() {
-        if ($isSingle) {
-            await single("Disabled");
+    function handleSingle() {
+        if (isSingle) {
+            console.log("Disable single.");
+            single("Disabled").catch((err) => console.error(err));
         } else {
-            await single("Enabled");
+            console.log("Enable single.");
+            single("Enabled").catch((err) => console.error(err));
         }
     }
 </script>
@@ -83,7 +87,7 @@
         </div>
         <div class="navbar-center">
             <button class="btn btn-sm btn-ghost" on:click={handleSingle}>
-                <div class:text-surface1={$isSingle}>
+                <div class:text-surface1={!isSingle}>
                     <Icon icon={numeric1BoxOutline} {height} />
                 </div>
             </button>
@@ -112,7 +116,7 @@
                 </button>
             </div>
             <button class="btn btn-sm btn-ghost" on:click={handleRepeat}>
-                <div class:text-surface1={$isRepeat}>
+                <div class:text-surface1={!$isRepeat}>
                     <Icon icon={repeatIcon} {height} />
                 </div>
             </button>
