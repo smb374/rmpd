@@ -1,0 +1,51 @@
+[package]
+name = "rmpd"
+version = "0.1.0"
+description = "A Tauri App"
+authors = ["Po-Yeh Chen <smb374@protonmail.com>"]
+license = ""
+repository = ""
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.4", features = [] }
+
+[dependencies]
+anyhow = "1.0"
+array-macro = "2.1"
+log = "0.4"
+tauri = { version = "1.4", features = [
+    "fs-all",
+    "protocol-asset",
+    "path-all",
+    "shell-open",
+] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+mpd_client = "1.2"
+
+[dependencies.base64ct]
+version = "1.6"
+features = ["alloc"]
+
+[dependencies.bytes]
+version = "1.4"
+features = ["serde"]
+
+[dependencies.specta]
+version = "1"
+features = ["functions"]
+
+[dependencies.tokio]
+version = "1"
+features = ["full"]
+
+[dev-dependencies]
+tauri-specta = { version = "1.0.2", features = ["javascript", "typescript"] }
+
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
